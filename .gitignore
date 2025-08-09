@@ -28,3 +28,6 @@ temp/
 
 # Others
 .env.local
+manifest.json
+dist/
+node_modules/
