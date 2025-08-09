@@ -21,13 +21,14 @@
   ],
   "engines": { "node": ">=18" },
   "scripts": {
-    "lint": "web-ext lint --source-dir . --ignore-files 'node_modules/**' 'dist/**'",
-    "dev:firefox": "web-ext run --source-dir . --start-url https://example.com",
-    "build": "web-ext build --source-dir . --artifacts-dir dist --overwrite-dest",
-    "icons": "node scripts/generate-icons.js"
+    "icons": "node scripts/generate-icons.js",
+    "lint:firefox": "node scripts/swap-manifest.mjs firefox && web-ext lint --source-dir . --ignore-files 'node_modules/**' 'dist/**'",
+    "dev:firefox": "node scripts/swap-manifest.mjs firefox && web-ext run --source-dir . --start-url https://example.com",
+    "build:firefox": "node scripts/swap-manifest.mjs firefox && web-ext build --source-dir . --artifacts-dir dist --overwrite-dest",
+    "prepare:chrome": "node scripts/swap-manifest.mjs chrome"
   },
   "devDependencies": {
     "sharp": "^0.33.4",
-    "web-ext": "^8.0.0"
+    "web-ext": "^8.9.0"
   }
 }

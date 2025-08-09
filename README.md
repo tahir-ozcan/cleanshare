@@ -35,5 +35,4 @@ Please read `CONTRIBUTING.md`, open an issue, or send a PR.
 
 ## License
 
-MIT © 2025 Tahir Özcan
 See the full text in the `LICENSE` file.

@@ -9,9 +9,8 @@
           "queryTransform": {
             "removeParams": [
               "utm_source","utm_medium","utm_campaign","utm_term","utm_content",
-              "gclid","gbraid","wbraid","fbclid","mc_cid","mc_eid","igshid",
-              "yclid","gclsrc","ref","ref_src","_hsenc","_hsmi","si","spm",
-              "mkt_tok","sr_share"
+              "gclid","gbraid","wbraid","fbclid","msclkid","yclid","igshid","gclsrc",
+              "mc_cid","mc_eid","_hsenc","_hsmi","mkt_tok","sr_share","si","spm","ref","ref_src"
             ]
           }
         }
@@ -20,6 +19,24 @@
     "condition": {
       "urlFilter": "|http*",
       "resourceTypes": ["main_frame","sub_frame","xmlhttprequest"]
+    }
+  },
+  {
+    "id": 2,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "queryTransform": {
+            "removeParams": ["cvid","pglt","form","sp","sc","qs","lq","pq","pc","PC"]
+          }
+        }
+      }
+    },
+    "condition": {
+      "urlFilter": "||bing.com/search?",
+      "resourceTypes": ["main_frame"]
     }
   }
 ]
