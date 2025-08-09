@@ -1,6 +1,6 @@
 {
   "name": "cleanshare",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Removes tracking junk from URLs when you browse, click, or copy. Privacy-first. Zero telemetry.",
   "author": "Tahir Ozcan",
   "license": "MIT",
@@ -19,7 +19,9 @@
     "link-cleaner",
     "url"
   ],
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "icons": "node scripts/generate-icons.js",
     "lint:firefox": "node scripts/swap-manifest.mjs firefox && web-ext lint --source-dir . --ignore-files 'node_modules/**' 'dist/**'",
