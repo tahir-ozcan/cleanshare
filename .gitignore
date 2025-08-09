@@ -1,5 +1,30 @@
-node_modules
-dist
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build artifacts
+dist/
 *.zip
+web-ext-artifacts/
+
+# Generated at build time
+manifest.json
+
+# OS cruft
 .DS_Store
+Thumbs.db
+
+# Editors/IDEs
+.vscode/
+.idea/
+
+# Temp files
 tmp-*/
+temp/
+*.tmp
+
+# Others
+.env.local
