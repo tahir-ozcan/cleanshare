@@ -24,11 +24,19 @@
   },
   "scripts": {
     "icons": "node scripts/generate-icons.js",
+    "assets": "node scripts/generate-assets.js",
     "lint:firefox": "node scripts/swap-manifest.mjs firefox && web-ext lint --source-dir . --ignore-files 'node_modules/**' 'dist/**'",
     "dev:firefox": "node scripts/swap-manifest.mjs firefox && web-ext run --source-dir . --start-url https://example.com",
     "build:firefox": "node scripts/swap-manifest.mjs firefox && web-ext build --source-dir . --artifacts-dir dist --overwrite-dest",
     "prepare:chrome": "node scripts/swap-manifest.mjs chrome",
-    "assets": "node scripts/generate-assets.js"
+
+    "bump": "node scripts/bump-version.mjs",
+    "zip:edge": "node scripts/zip.mjs edge",
+    "zip:chrome": "node scripts/zip.mjs chrome",
+
+    "release:patch": "npm version patch -m \"chore(release): %s\" && npm run bump && npm run build:firefox && npm run prepare:chrome && npm run zip:edge && npm run zip:chrome",
+    "release:minor": "npm version minor -m \"chore(release): %s\" && npm run bump && npm run build:firefox && npm run prepare:chrome && npm run zip:edge && npm run zip:chrome",
+    "release:major": "npm version major -m \"chore(release): %s\" && npm run bump && npm run build:firefox && npm run prepare:chrome && npm run zip:edge && npm run zip:chrome"
   },
   "devDependencies": {
     "sharp": "^0.33.4",
