@@ -1,3 +1,4 @@
+// Lightweight cleaner for showing a "cleaned" URL in the popup
 function cleanUrl(u) {
   try {
     const url = new URL(u);
@@ -29,7 +30,7 @@ function cleanUrl(u) {
   } catch { return u; }
 }
 
-const status = (msg, ok=true) => {
+const status = (msg, ok = true) => {
   const el = document.getElementById("status");
   el.textContent = msg || "";
   el.className = "status " + (ok ? "ok" : "err");
@@ -53,6 +54,21 @@ async function getCanonicalFromTab(tabId) {
       }
     });
     return result;
+  }
+}
+
+// Güvenilir sekme açma yardımcıları (Chrome/Edge/Firefox uyumlu)
+function openUrlInNewTab(url) {
+  try {
+    if (chrome?.tabs?.create) {
+      chrome.tabs.create({ url });
+    } else if (typeof browser !== "undefined" && browser?.tabs?.create) {
+      browser.tabs.create({ url });
+    } else {
+      window.open(url, "_blank", "noopener");
+    }
+  } catch {
+    window.open(url, "_blank", "noopener");
   }
 }
 
@@ -82,8 +98,15 @@ async function init() {
     }
   };
 
-  document.getElementById("repo").href = "https://github.com/tahir-ozcan/cleanshare";
-  document.getElementById("donate").href = "https://github.com/sponsors/tahir-ozcan";
+  // Link tıklamalarını API ile açarak tüm tarayıcılarda garanti altına al
+  document.getElementById("donate").addEventListener("click", (e) => {
+    e.preventDefault();
+    openUrlInNewTab("https://www.patreon.com/tahirozcan");
+  });
+  document.getElementById("repo").addEventListener("click", (e) => {
+    e.preventDefault();
+    openUrlInNewTab("https://github.com/tahir-ozcan/cleanshare");
+  });
 }
 
 init();
