@@ -1,6 +1,6 @@
 {
   "name": "cleanshare",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Removes tracking junk from URLs when you browse, click, or copy. Privacy-first. Zero telemetry.",
   "author": "Tahir Ozcan",
   "license": "MIT",
@@ -29,11 +29,9 @@
     "dev:firefox": "node scripts/swap-manifest.mjs firefox && web-ext run --source-dir . --start-url https://example.com",
     "build:firefox": "node scripts/swap-manifest.mjs firefox && web-ext build --source-dir . --artifacts-dir dist --overwrite-dest",
     "prepare:chrome": "node scripts/swap-manifest.mjs chrome",
-
     "bump": "node scripts/bump-version.mjs",
     "zip:edge": "node scripts/zip.mjs edge",
     "zip:chrome": "node scripts/zip.mjs chrome",
-
     "release:patch": "npm version patch -m \"chore(release): %s\" && npm run bump && npm run build:firefox && npm run prepare:chrome && npm run zip:edge && npm run zip:chrome",
     "release:minor": "npm version minor -m \"chore(release): %s\" && npm run bump && npm run build:firefox && npm run prepare:chrome && npm run zip:edge && npm run zip:chrome",
     "release:major": "npm version major -m \"chore(release): %s\" && npm run bump && npm run build:firefox && npm run prepare:chrome && npm run zip:edge && npm run zip:chrome"
