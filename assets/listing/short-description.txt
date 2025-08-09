@@ -1,0 +1,1 @@
+Removes tracking junk from URLs. One tap to copy clean or canonical links. Privacy-first. Zero telemetry.

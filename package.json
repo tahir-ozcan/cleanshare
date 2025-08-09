@@ -1,0 +1,33 @@
+{
+  "name": "cleanshare",
+  "version": "0.1.0",
+  "description": "Removes tracking junk from URLs when you browse, click, or copy. Privacy-first. Zero telemetry.",
+  "author": "Tahir Ozcan",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/tahir-ozcan/cleanshare.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tahir-ozcan/cleanshare/issues"
+  },
+  "homepage": "https://github.com/tahir-ozcan/cleanshare#readme",
+  "keywords": [
+    "browser-extension",
+    "privacy",
+    "manifest-v3",
+    "link-cleaner",
+    "url"
+  ],
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "lint": "web-ext lint --source-dir . --ignore-files 'node_modules/**' 'dist/**'",
+    "dev:firefox": "web-ext run --source-dir . --start-url https://example.com",
+    "build": "web-ext build --source-dir . --artifacts-dir dist --overwrite-dest",
+    "icons": "node scripts/generate-icons.js"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.4",
+    "web-ext": "^8.0.0"
+  }
+}
