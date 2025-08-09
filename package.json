@@ -1,6 +1,6 @@
 {
   "name": "cleanshare",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Removes tracking junk from URLs when you browse, click, or copy. Privacy-first. Zero telemetry.",
   "author": "Tahir Ozcan",
   "license": "MIT",
