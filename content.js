@@ -1,9 +1,9 @@
 /* CleanShare content script
    - Early redirect resolve (Google/Facebook redirectors)
    - Case-insensitive tracker removal
-   - Host-specific URL whitelists (Bing/Google/DDG/YT/Amazon/LinkedIn/Medium)
-   - Rewrites anchors in DOM
-   - Handles clipboard writes on request from background
+   - Host-specific whitelists (Bing/Google/DDG/YT/Amazon/LinkedIn/Medium)
+   - Rewrite anchors
+   - Clipboard bridge
 */
 
 const TRACK_PARAMS = new Set([
@@ -16,7 +16,7 @@ function cleanUrl(u) {
   try {
     const url = new URL(u);
 
-    // Common redirectors
+    // Redirectors
     if (url.hostname.endsWith("google.com") && (url.pathname === "/url" || url.pathname === "/imgres")) {
       const t = url.searchParams.get("url") || url.searchParams.get("q") || url.searchParams.get("imgurl");
       if (t) return cleanUrl(t);
@@ -26,22 +26,21 @@ function cleanUrl(u) {
       if (t) return cleanUrl(t);
     }
 
-    // Generic removal (utm_* + known trackers), case-insensitive
+    // Generic cleanup (case-insensitive)
     for (const key of [...url.searchParams.keys()]) {
       const low = key.toLowerCase();
       if (low.startsWith("utm_") || TRACK_PARAMS.has(low)) url.searchParams.delete(key);
     }
 
-    // Host-specific rules
     const host = url.hostname;
 
-    // Bing search => keep only q
+    // Bing: only q
     if (host.endsWith("bing.com") && url.pathname === "/search") {
       const q = url.searchParams.get("q");
       url.search = q ? new URLSearchParams({ q }).toString() : "";
     }
 
-    // Google search => keep q (+tbm)
+    // Google search: q (+tbm)
     if (host.endsWith("google.com") && url.pathname === "/search") {
       const q = url.searchParams.get("q") || "";
       const tbm = url.searchParams.get("tbm");
@@ -51,13 +50,13 @@ function cleanUrl(u) {
       url.search = kept.toString();
     }
 
-    // DuckDuckGo => keep q
+    // DuckDuckGo: q
     if (host.endsWith("duckduckgo.com") && (url.pathname === "/" || url.pathname === "/")) {
       const q = url.searchParams.get("q");
       url.search = q ? new URLSearchParams({ q }).toString() : "";
     }
 
-    // YouTube watch => keep v, t and playlist context
+    // YouTube watch: v,t,list,index
     if (host.endsWith("youtube.com") && url.pathname === "/watch") {
       const kept = new URLSearchParams();
       const v = url.searchParams.get("v");
@@ -71,12 +70,12 @@ function cleanUrl(u) {
       url.search = kept.toString();
     }
 
-    // Amazon product page => strip query
+    // Amazon product
     if (/\.amazon\./.test(host) && (url.pathname.includes("/dp/") || url.pathname.includes("/gp/product/"))) {
       url.search = "";
     }
 
-    // LinkedIn / Medium cleanup
+    // LinkedIn / Medium
     if (host.endsWith("linkedin.com")) {
       url.searchParams.delete("trk");
       url.searchParams.delete("originalSubdomain");
@@ -87,7 +86,7 @@ function cleanUrl(u) {
       url.search = url.searchParams.toString();
     }
 
-    // Fragment UTM cleanup
+    // Hash utm
     if (url.hash && /utm_/i.test(url.hash)) {
       const h = new URLSearchParams(url.hash.slice(1));
       for (const k of [...h.keys()]) if (k.toLowerCase().startsWith("utm_")) h.delete(k);
@@ -101,7 +100,7 @@ function cleanUrl(u) {
   }
 }
 
-// 1) Early redirect to the final cleaned URL (avoid flicker loops)
+// Early redirect
 (function earlyRedirect() {
   try {
     const before = location.href;
@@ -110,7 +109,7 @@ function cleanUrl(u) {
   } catch {}
 })();
 
-// 2) Rewrite links within the page
+// Rewrite anchors
 function rewriteLinks(root = document) {
   root.querySelectorAll("a[href]").forEach((a) => {
     const raw = a.getAttribute("href");
@@ -126,14 +125,14 @@ document.addEventListener("click", (e) => {
   if (cleaned !== a.href) a.href = cleaned;
 });
 
-// 3) Clipboard copy + canonical fetch bridge for background/popup
+// Clipboard / canonical bridge
 chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   if (msg?.type === "copy") {
     navigator.clipboard.writeText(msg.text).then(
       () => sendResponse({ ok: true }),
       () => sendResponse({ ok: false })
     );
-    return true; // async
+    return true;
   }
   if (msg?.type === "getCanonical") {
     try {

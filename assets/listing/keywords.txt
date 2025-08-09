@@ -1,1 +1,1 @@
-privacy, url cleaner, link cleaner, utm remover, manifest v3, clean link, canonical link, redirect bypass
+privacy, url cleaner, link cleaner, utm remover, canonical link, redirect bypass, manifest v3, clean link, copy link, zero telemetry

@@ -27,7 +27,8 @@
     "lint:firefox": "node scripts/swap-manifest.mjs firefox && web-ext lint --source-dir . --ignore-files 'node_modules/**' 'dist/**'",
     "dev:firefox": "node scripts/swap-manifest.mjs firefox && web-ext run --source-dir . --start-url https://example.com",
     "build:firefox": "node scripts/swap-manifest.mjs firefox && web-ext build --source-dir . --artifacts-dir dist --overwrite-dest",
-    "prepare:chrome": "node scripts/swap-manifest.mjs chrome"
+    "prepare:chrome": "node scripts/swap-manifest.mjs chrome",
+    "assets": "node scripts/generate-assets.js"
   },
   "devDependencies": {
     "sharp": "^0.33.4",

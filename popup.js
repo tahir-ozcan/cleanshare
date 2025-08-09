@@ -1,4 +1,3 @@
-// Small shared cleaner (kept in popup too for user-visible output)
 function cleanUrl(u) {
   try {
     const url = new URL(u);
@@ -10,7 +9,6 @@ function cleanUrl(u) {
       const low = k.toLowerCase();
       if (low.startsWith("utm_") || TRACK_PARAMS.has(low)) url.searchParams.delete(k);
     }
-    // Host-specific quick rules kept minimal in popup:
     if (url.hostname.endsWith("bing.com") && url.pathname === "/search") {
       const q = url.searchParams.get("q");
       url.search = q ? new URLSearchParams({ q }).toString() : "";
@@ -44,11 +42,9 @@ async function getActiveTab() {
 
 async function getCanonicalFromTab(tabId) {
   try {
-    // ask content script first (faster if already injected)
     const res = await chrome.tabs.sendMessage(tabId, { type: "getCanonical" });
     return res?.canonical;
   } catch {
-    // fallback: inject function
     const [{ result }] = await chrome.scripting.executeScript({
       target: { tabId },
       func: () => {
@@ -87,7 +83,7 @@ async function init() {
   };
 
   document.getElementById("repo").href = "https://github.com/tahir-ozcan/cleanshare";
-  document.getElementById("donate").href = "https://github.com/patreon/tahirozcan";
+  document.getElementById("donate").href = "https://github.com/sponsors/tahir-ozcan";
 }
 
 init();
